@@ -15,7 +15,7 @@ $great = empty($name)?"Hello world!":"Hello, ".$name;
 
 if (!empty($name)) {
     require_sesskey(); // Проверяем ключ сессии
-    // Делайте все, что вам нужно, например $DB->delete_records (...) и т.д.
+    // Делайте все, что вам нужно, например удаление данных из БД $DB->delete_records (...) и т.д.
 }
 ?>
 <!doctype html>

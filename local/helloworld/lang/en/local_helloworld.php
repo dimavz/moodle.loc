@@ -23,3 +23,5 @@
  */
 
 $string['pluginname'] = 'Hello world';
+$string['ratingtime'] = 'Check Field';
+$string['buttonlabel'] = 'Send Data';
