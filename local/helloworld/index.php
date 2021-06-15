@@ -33,9 +33,13 @@ $PAGE->set_heading('Plugin Hello World!');
 //print_r($context);
 //echo '</pre>';
 //exit();
+// Переопределение стандартного вывода из classes/output/render.php
+$output = $PAGE->get_renderer('local_helloworld');
+//
+echo $output->header();
+//echo $output->test();
 
-
-echo $OUTPUT->header();
+//echo $OUTPUT->header();
 
 $url = new \moodle_url('/local/helloworld/hendler.php'); // Формируем ссылку для обработчика формы
 
