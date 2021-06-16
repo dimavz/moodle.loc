@@ -27,3 +27,6 @@ $string['ratingtime'] = 'Check Field';
 $string['buttonlabel'] = 'Send Data';
 $string['typeyourname'] = 'Enter you name';
 $string['sayhello'] = 'Say Hello';
+$string['manage'] = 'Manage Plugin Hello World';
+$string['showinnavigation'] = 'Show in navigation';
+$string['showinnavigation_desc'] = 'Show or hide the plugin link in the site navigation';
