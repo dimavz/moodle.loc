@@ -17,8 +17,8 @@
 require_once(__DIR__ . '/../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
-$form_url = new \moodle_url('/local/helloworld/index.php');
-$home_url = new \moodle_url('/');
+$form_url = new moodle_url('/local/helloworld/index.php');
+$home_url = new moodle_url('/');
 
 $name = optional_param('name', '', PARAM_NOTAGS);
 //$name = optional_param('name', '', PARAM_RAW);
@@ -33,12 +33,11 @@ if (!empty($name)) {
     require_sesskey(); // Проверяем ключ сессии.
     // Делайте все, что вам нужно, например удаление данных из БД $DB->delete_records (...) и т.д.
 }
-$PAGE->set_url($form_url);
+$PAGE->set_url(new moodle_url('/local/helloworld/hendler.php'));
 $PAGE->set_context(context_system::instance());
 //$PAGE->set_context(context_coursecat::instance(1));
 $PAGE->set_pagelayout('standard');
-$PAGE->set_title('Мой первый плагин');
-//$PAGE->set_heading('Result!');
+$PAGE->set_title($great );
 $PAGE->set_heading(get_string('pluginname', 'local_helloworld'));
 
 echo $OUTPUT->header();
@@ -46,7 +45,7 @@ echo $OUTPUT->header();
 
 <h1><?php echo $great ?></h1>
 <p><a href="<?php echo $home_url ?>">Home</a></p>
-<p><a href="<?php echo $PAGE->url ?>">Plugin Main Page</a></p>
+<p><a href="<?php echo $form_url ?>">Plugin Main Page</a></p>
 <?php
 echo $OUTPUT->footer();
 

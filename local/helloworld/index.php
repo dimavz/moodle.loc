@@ -17,11 +17,12 @@
 require_once('../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
-$PAGE->set_url(new moodle_url('/local/helloworld/hendler.php'));
+$PAGE->set_url(new moodle_url('/local/helloworld/index.php'));
 $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title('Мой первый плагин');
 $PAGE->set_heading('Plugin Hello World!');
+$PAGE->navigation->add(get_string('pluginname', 'local_helloworld'),new moodle_url('/local/helloworld/index.php'));
 
 //Подключаем скрипт к странице
 //$js_url = new \moodle_url('/local/helloworld/js/main.js');
@@ -33,20 +34,21 @@ $PAGE->set_heading('Plugin Hello World!');
 //print_r($context);
 //echo '</pre>';
 //exit();
+
+// Стандартный вывод
+//echo $OUTPUT->header();
+
 // Переопределение стандартного вывода из classes/output/render.php
 $output = $PAGE->get_renderer('local_helloworld');
 //
 echo $output->header();
-//echo $output->test();
-
-//echo $OUTPUT->header();
 
 $url = new \moodle_url('/local/helloworld/hendler.php'); // Формируем ссылку для обработчика формы
 
 ?>
 <h1>Hello World</h1>
 <p>What is your name?</p>
-<form action="<?php echo $PAGE->url ?>">
+<form action="<?php echo $url ?>">
     <?php
     echo html_writer::tag('input', '', [
         'type' => 'text',
