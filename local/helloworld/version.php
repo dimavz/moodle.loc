@@ -26,4 +26,6 @@ require_once(__DIR__ . '/../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'local_helloworld';
-$plugin->version = 2021061500;
+$plugin->release="1.0.0";
+//$plugin->requires = 2021061501;
+$plugin->version = 2021061502;

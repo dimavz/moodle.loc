@@ -37,9 +37,9 @@ $PAGE->set_url(new moodle_url('/local/helloworld/hendler.php'));
 $PAGE->set_context(context_system::instance());
 //$PAGE->set_context(context_coursecat::instance(1));
 $PAGE->set_pagelayout('standard');
-$PAGE->set_title($great );
+$PAGE->set_title($great);
 $PAGE->set_heading(get_string('pluginname', 'local_helloworld'));
-
+$PAGE->navigation->add(get_string('pluginname', 'local_helloworld'),new moodle_url('/local/helloworld/hendler.php'));
 echo $OUTPUT->header();
 ?>
 

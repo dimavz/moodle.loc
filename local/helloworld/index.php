@@ -19,6 +19,8 @@ defined('MOODLE_INTERNAL') || die;
 
 $PAGE->set_url(new moodle_url('/local/helloworld/index.php'));
 $PAGE->set_context(context_system::instance());
+//$PAGE->set_context(context_coursecat::instance(1));
+//$PAGE->set_context(context_course::instance(1));
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title('Мой первый плагин');
 $PAGE->set_heading('Plugin Hello World!');

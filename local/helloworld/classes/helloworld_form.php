@@ -13,13 +13,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+namespace local_helloworld;
 
 require_once(__DIR__ . '/../../../config.php');
 
 // Class moodleform is defined in formslib.php.
 require_once("$CFG->libdir/formslib.php");
 
-class helloworld_form extends moodleform {
+class helloworld_form extends \moodleform {
 
     public function definition() {
         global $CFG;

@@ -40,6 +40,9 @@ if ($hassiteconfig) {
         $setting->set_locked_flag_options(admin_setting_flag :: ENABLED, false);
         $settingspage->add($setting);
     }
-
-    $ADMIN->add('localplugins', $settingspage);
+    $ADMIN->add('localplugins', new admin_category('helloworld_settings',
+        get_string('pluginname', 'local_helloworld')));
+    $ADMIN->add('helloworld_settings', $settingspage);
+    $ADMIN->add('helloworld_settings', new admin_externalpage('pagesettings', get_string('externalpage', 'local_helloworld'),
+        $CFG->wwwroot . '/local/helloworld/pagesettings.php'));
 }
