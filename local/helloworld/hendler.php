@@ -32,6 +32,23 @@ $great = empty($name) ? "Hello world!" : "Hello, " . $name;
 if (!empty($name)) {
     require_sesskey(); // Проверяем ключ сессии.
     // Делайте все, что вам нужно, например удаление данных из БД $DB->delete_records (...) и т.д.
+    $table = 'local_helloworld';
+    $dataobject = new stdClass();
+    $dataobject->name = $name;
+    try {
+        $transaction = $DB->start_delegated_transaction();
+
+        $new_id = $DB->insert_record($table, $dataobject);
+        if (!empty($new_id)) {
+            $data = new stdClass();
+            $data->datetime = time();
+            $data->greet_id = $new_id;
+            $DB->insert_record($table . '_date', $data);
+        }
+        $transaction->allow_commit();
+    } catch (Exception $e) {
+        $transaction->rollback($e);
+    }
 }
 $PAGE->set_url(new moodle_url('/local/helloworld/hendler.php'));
 $PAGE->set_context(context_system::instance());
@@ -39,14 +56,37 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_pagelayout('standard');
 $PAGE->set_title($great);
 $PAGE->set_heading(get_string('pluginname', 'local_helloworld'));
-$PAGE->navigation->add(get_string('pluginname', 'local_helloworld'),new moodle_url('/local/helloworld/hendler.php'));
+$PAGE->navigation->add(get_string('pluginname', 'local_helloworld'), new moodle_url('/local/helloworld/hendler.php'));
 echo $OUTPUT->header();
+
 ?>
 
-<h1><?php echo $great ?></h1>
-<p><a href="<?php echo $home_url ?>">Home</a></p>
-<p><a href="<?php echo $form_url ?>">Plugin Main Page</a></p>
+    <h1><?php echo $great ?></h1>
+    <p><a href="<?php echo $home_url ?>">Home</a></p>
+    <p><a href="<?php echo $form_url ?>">Plugin Main Page</a></p>
 <?php
+$sql = "SELECT u.id,u.name,d.datetime FROM {local_helloworld} u JOIN {local_helloworld_date} d ON d.greet_id = u.id GROUP BY d.datetime";
+
+$records = $DB->get_records_sql($sql);
+
+if (!empty($records)) {
+    ?>
+    <table>
+        <tr>
+            <th>User Name</th>
+            <th>Date</th>
+        </tr>
+        <?php foreach ($records as $record): ?>
+            <tr>
+                <td><?php echo $record->name ?></td>
+                <td><?php echo userdate($record->datetime, get_string('strftimerecentfull', 'core_langconfig'));  ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <?php
+
+}
 echo $OUTPUT->footer();
 
 

@@ -46,6 +46,8 @@ $output = $PAGE->get_renderer('local_helloworld');
 echo $output->header();
 
 $url = new \moodle_url('/local/helloworld/hendler.php'); // Формируем ссылку для обработчика формы
+//$user = $DB->get_record('user', ['id' => '1']);
+//$role= $DB->get_record_sql('SELECT * FROM {role} WHERE id = 1;');
 
 ?>
 <h1>Hello World</h1>
