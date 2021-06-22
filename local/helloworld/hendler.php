@@ -16,6 +16,15 @@
 
 require_once(__DIR__ . '/../../config.php');
 defined('MOODLE_INTERNAL') || die;
+require_login(); // Проверяем, является ли пользователь зарегестрированным
+
+// Проверяем, является ли пользователь гостем. Если да, то генерируем ошибку
+// Гостям закрываем доступ к скрипту
+if (isguestuser()){
+    print_error('noguest');
+}
+
+
 
 $form_url = new moodle_url('/local/helloworld/index.php');
 $home_url = new moodle_url('/');

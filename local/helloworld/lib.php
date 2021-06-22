@@ -36,22 +36,29 @@ function local_helloworld_extend_navigation_user_settings(navigation_node $paren
  */
 function local_helloworld_extend_navigation(global_navigation $root) {
 
-    // Получаем настройку, которая создаётся в файле settings.php плагина и храниться в БД
-    // Данная настройка доступна для редактирования через интерфейс администратора
-    $showinnavigation = get_config('local_helloworld','showinnavigation');
+    // Проверяем, является ли пользователь гостем. Если да, то скрываем ссылку в меню
+    if (isguestuser()){
+        return;
+    }
 
-    if($showinnavigation){
-        $node = navigation_node::create(
-            get_string('sayhello', 'local_helloworld'),
-            new moodle_url('/local/helloworld/index.php'),
-            navigation_node::TYPE_CUSTOM,
-            null,
-            null,
-            new pix_icon('t/message', '')
-        );
-        $node->showinflatnavigation = true;
+    if(isloggedin()){ // Если пользователь залогинен, то показываем ссылку
+        // Получаем настройку, которая создаётся в файле settings.php плагина и храниться в БД
+        // Данная настройка доступна для редактирования через интерфейс администратора
+        $showinnavigation = get_config('local_helloworld','showinnavigation');
 
-        $root->add_node($node);
+        if($showinnavigation){
+            $node = navigation_node::create(
+                get_string('sayhello', 'local_helloworld'),
+                new moodle_url('/local/helloworld/index.php'),
+                navigation_node::TYPE_CUSTOM,
+                null,
+                null,
+                new pix_icon('t/message', '')
+            );
+            $node->showinflatnavigation = true;
+
+            $root->add_node($node);
+        }
     }
 
 }

@@ -26,6 +26,14 @@ $PAGE->set_title('Мой первый плагин');
 $PAGE->set_heading('Plugin Hello World!');
 $PAGE->navigation->add(get_string('pluginname', 'local_helloworld'),new moodle_url('/local/helloworld/index.php'));
 
+require_login(); // Проверяем, является ли пользователь зарегестрированным
+
+// Проверяем, является ли пользователь гостем. Если да, то генерируем ошибку
+// Гостям закрываем доступ к скрипту
+if (isguestuser()){
+    print_error('noguest');
+}
+
 //Подключаем скрипт к странице
 //$js_url = new \moodle_url('/local/helloworld/js/main.js');
 //$PAGE->requires->js($js_url);
