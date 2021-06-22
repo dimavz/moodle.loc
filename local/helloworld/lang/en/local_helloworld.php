@@ -31,3 +31,6 @@ $string['manage'] = 'Manage Plugin Hello World';
 $string['showinnavigation'] = 'Show in navigation';
 $string['showinnavigation_desc'] = 'Show or hide the plugin link in the site navigation';
 $string['externalpage'] = 'Additional settings';
+$string['helloworld:deleteanymessages'] = 'Delete any posted message from the HelloWorld wall';
+$string['helloworld:postmessages'] = 'Post new message to the HelloWorld wall';
+$string['helloworld:viewmessages'] = 'View messages on the HelloWorld wall';
