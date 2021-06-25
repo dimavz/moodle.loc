@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+        $('.filter-single').select2();
+        // $('.filter-multiple').select2();
+        $('.filter-multiple').select2({
+            placeholder: 'Select an option'
+        });
+
     $('select').change(function () {
         let filters = [];
         let filter;
@@ -15,7 +21,6 @@ $(document).ready(function () {
             }
         });
         getQuery(filters);
-        console.log(filters);
     });
 });
 
@@ -35,12 +40,13 @@ function isEmpty(data) {
 }
 
 function getQuery(filters) {
-    const URL = config_ajax.wwwroot + '/local/aaviewreports/data_request.php';
-    const TYPE = config_ajax.settings.type;
-    const DATATYPE = config_ajax.settings.dataType;
+    console.log('getDataFromServer')
+    const URL = configAjax.wwwroot + '/local/aaviewreports/data_request.php';
+    const TYPE = configAjax.settings.type;
+    const DATATYPE = configAjax.settings.dataType;
 
     let data = {
-        dataset:{
+        dataset: {
             report: 'general',
             filters: filters,
         }
@@ -53,11 +59,10 @@ function getQuery(filters) {
     });
 
     request.done(function (msg) {
-        $('.aaviewreport__wrap').html();
-        $('.aaviewreport__wrap').html(msg);
-        // $('.filter-single').select2();
-        // $('.filter-multiple').select2();
-        console.log(msg);
+        $('#filters').html();
+        $('#filters').html(msg);
+        // console.log(msg);
+        $('.filter-multiple').select2();
     });
     request.fail(function (jqXHR, textStatus) {
         console.log(jqXHR);

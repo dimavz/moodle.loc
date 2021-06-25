@@ -2,76 +2,19 @@
 
 
 namespace local_aaviewreports;
+use local_aaviewreports\provider;
 
 
-class filters
+class filters extends provider
 {
-    protected $service_url;
-    protected $request_url;
-    protected $url;
-    protected $token;
-    protected $filters;
-    protected $data;
-
-    public function __construct($data = array())
-    {
-        $this->service_url = get_config('local_aaviewreports', 'url');
-        $this->request_url = '/aareport/webservice/restful/server.php/local_aareports_get_report_filter';
-        if (!empty($this->service_url)) {
-            $this->url = $this->service_url . $this->request_url;
-        }
-        $this->token = get_config('local_aaviewreports', 'token');
-        $this->filters = $this->getFilters($data);
-    }
-
-    public function getFilters($data = array())
-    {
-        $this->data = $data;
-        $filters = null;
-        if (!empty($this->url) && !empty($this->token)) {
-            $curl = curl_init();
-
-            if (empty($this->data)) {
-                $this->data = array('report' => 'general');
-            } else {
-//                $this->data = $this->reformatData($data);
-                $this->data = array('report' => 'general', 'filters[0][name]' => 'company', 'filters[0][selected]' => '133, 125');
-            }
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => $this->url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => $this->data,
-                CURLOPT_HTTPHEADER => array(
-//                    'Content-Type: x-www-form-urlencoded',
-                    "Authorization: {$this->token}",
-                    'Accept: application/json'
-                ),
-            ));
-
-            $filters = curl_exec($curl);
-
-            curl_close($curl);
-
-            $filters = json_decode($filters);
-        }
-        return $filters;
-    }
-
-    public function renderHtml()
+    public function renderItems()
     {
         $html = '';
-        if (!empty($this->filters) && isset($this->filters->filters)) {
+        if (!empty($this->items) && isset($this->items->filters)) {
             ob_start();
             ?>
             <div class="aaviewreport__wrap">
-                <?php $filters = $this->filters->filters;
+                <?php $filters = $this->items->filters;
                 $count = 0;
                 foreach ($filters as $filter) {
 
@@ -106,21 +49,5 @@ class filters
             ob_end_clean();
         }
         return $html;
-    }
-
-    private function reformatData($olddata, $newdata = array())
-    {
-        if (is_array($olddata)) {
-            foreach ($olddata as $key => $item) {
-                if (is_array($item)) {
-                    $str = "{$key}";
-                    $str .= $this->reformatData($item, $newdata);
-                    $newdata[] = $str;
-                } else {
-                    $newdata[] = "{$key} => {$item}";
-                }
-            }
-        }
-        return $newdata;
     }
 }
