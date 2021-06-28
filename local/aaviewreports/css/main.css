@@ -121,6 +121,8 @@
 
 /* Table Styles  */
 #table_aaviewreports {
+    display: flex;
+    flex-direction: column;
     margin-top: 20px;
     display: flex;
 }
@@ -152,4 +154,41 @@
 
 #table_aaviewreports table .cell-grey {
     background-color: #e6e6e6;
+}
+
+/* Pagination */
+
+.pagination__aaviewreports{
+    display: flex;
+    margin: 10px 0;
+}
+
+.pagination__aaviewreports .page-item{
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #8c949c;
+    /*background-color:#fc4710;*/
+}
+
+.pagination__aaviewreports .page-item:hover{
+
+    background-color:#f7f7f7;
+    border-radius: 50%;
+}
+
+.pagination__aaviewreports .page-item.active{
+    border: 1px solid #fc4710;
+    border-radius: 50%;
+    color: #fff;
+    background-color:#fc4710;
+    cursor: auto;
+}
+
+.pagination__boxperpage label{
+    margin-right: 10px;
 }

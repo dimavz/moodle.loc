@@ -110,6 +110,16 @@ abstract class provider
                         }
                     }
                 }
+                if (is_array($item) && $key == 'pagination') {
+                    foreach ($item as $pkey => $pval) {
+                        if ($pkey == 'page') {
+                            $newdata[] = "pagination[currentPage]=>{$pval}";
+                        }
+                        if ($pkey == 'perpage') {
+                            $newdata[] = "pagination[perPage]=>{$pval}";
+                        }
+                    }
+                }
             }
         }
         $reformat = array();

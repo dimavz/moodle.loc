@@ -1,4 +1,4 @@
-define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
+define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
     return {
         init: function () {
             loadChosen();
@@ -9,21 +9,35 @@ define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
                 queryFilters(filters);
             });
 
-            $('#clear-filters').click(function (){
+            $('#clear-filters').click(function () {
                 clearFilters();
             });
 
 
-            $('#apply-filters').click(function (){
+            $('#apply-filters').click(function () {
                 const filters = getFilters();
                 console.log(filters);
                 queryTable(filters);
             });
 
-            function getFilters(){
+            initPagination();
+
+            function initPagination(){
+                $('.page-item[data-page]').click(function () {
+                    const num_page = $(this).attr('data-page');
+                    console.log("Click по странице = ", num_page);
+                    const perpagevalue = getPerPage();
+                    let pagination = {page: num_page, perpage: perpagevalue}
+                    const filters = getFilters();
+                    queryTable(filters,pagination);
+                });
+            }
+
+
+            function getFilters() {
                 let filters = [];
                 let filter;
-                const listSelect = $('select');
+                const listSelect = $('#filters_aaviewreports select');
                 let count = 0;
                 $.each(listSelect, function (index, elem) {
                     const name = elem.getAttribute('id');
@@ -35,6 +49,18 @@ define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
                     }
                 });
                 return filters;
+            }
+
+            function getPerPage() {
+                let perpagevalue;
+                const select = $('#menuperpage');
+                $.each(select, function (index, elem) {
+                    if ($(elem).attr('selected')) {
+                        return perpagevalue = $(elem).val();
+                    }
+                    perpagevalue = $(elem).val();
+                })
+                return perpagevalue;
             }
 
             function loadChosen() {
@@ -57,7 +83,7 @@ define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
                 return false;
             }
 
-            function sendQuery(data,selector = '#filters_aaviewreports') {
+            function sendQuery(data, selector = '#filters_aaviewreports') {
                 ShowLoader();
                 console.log('getDataFromServer');
                 const URL = configAjax.wwwroot + '/local/aaviewreports/data_request.php';
@@ -76,16 +102,17 @@ define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
                     $(selector).html(response);
                     loadChosen();
                     HideLoader();
-                    // console.log(msg);
+                    initPagination();
                     console.log('Данные получены');
                 });
                 request.fail(function (jqXHR, textStatus) {
                     HideLoader();
+                    initPagination();
                     console.log(jqXHR);
                 });
             }
 
-            function queryFilters(filters){
+            function queryFilters(filters) {
                 let data = {
                     dataset: {
                         report: 'general',
@@ -95,17 +122,18 @@ define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
                 sendQuery(data);
             }
 
-            function queryTable(filters){
+            function queryTable(filters,pagination = null) {
                 let data = {
                     datatable: {
                         report: 'general',
                         filters: filters,
+                        pagination:pagination,
                     }
                 }
-                sendQuery(data,'#table_aaviewreports');
+                sendQuery(data, '#table_aaviewreports');
             }
 
-            function clearFilters(){
+            function clearFilters() {
 
                 let data = {
                     clearfilters: 'clearfilters'
@@ -113,12 +141,12 @@ define(['jquery', 'jqueryui','local_aaviewreports/chosen'], function ($) {
                 sendQuery(data);
             }
 
-            function ShowLoader(){
-                $('.loader__wrap').css('display','flex');
+            function ShowLoader() {
+                $('.loader__wrap').css('display', 'flex');
             }
 
-            function HideLoader(){
-                $('.loader__wrap').css('display','none');
+            function HideLoader() {
+                $('.loader__wrap').css('display', 'none');
             }
         }
     }

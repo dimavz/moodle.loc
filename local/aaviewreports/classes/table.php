@@ -3,22 +3,37 @@
 
 namespace local_aaviewreports;
 use local_aaviewreports\provider;
+use local_aaviewreports\pagination;
 
 
 class table extends provider
 {
     protected $request_url = '/aareport/webservice/restful/server.php/local_aareports_get_report_data';
+    protected $response;
+    protected $paginationParams;
+    public $pagination;
 
     public function getItems($data = array())
     {
         $response = parent::getItems($data);
+        if(!empty($response)){
+            $this->response = $response;
+            $this->paginationParams = $response->pagination;
+            $pagination = new pagination($this->paginationParams);
+            $this->pagination = $pagination;
+        }
 
         return $response->table;
     }
 
     public function renderItems()
     {
-        $html = parent::renderItems();
+        $html='';
+        if(!empty($this->pagination)){
+            $html .= $this->pagination->showPagination();
+        }
+        $html .= parent::renderItems();
+
         $html .= $this->renderTable();
         return  $html;
     }
@@ -98,9 +113,11 @@ class table extends provider
         ob_start();
         echo '<pre>';
         print_r($this->items);
+        print_r($this->pagination);
         echo '</pre>';
         $html = ob_get_contents();
         ob_end_clean();
         return $html;
     }
+
 }
