@@ -5,7 +5,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             $('body').on('change', '.filter-multiple,.filter-single', function () {
                 const filters = getFilters();
-                console.log(filters);
+                // console.log(filters);
                 queryFilters(filters);
             });
 
@@ -16,7 +16,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             $('#apply-filters').click(function () {
                 const filters = getFilters();
-                console.log(filters);
+                // console.log(filters);
                 queryTable(filters);
             });
 
@@ -25,12 +25,24 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
             function initPagination(){
                 $('.page-item[data-page]').click(function () {
                     const num_page = $(this).attr('data-page');
-                    console.log("Click по странице = ", num_page);
                     const perpagevalue = getPerPage();
                     let pagination = {page: num_page, perpage: perpagevalue}
                     const filters = getFilters();
                     queryTable(filters,pagination);
+                    // console.log("Click по странице = ", num_page);
+                    // console.log("Записей на странице = ", perpagevalue);
                 });
+
+                $('#menuperpage').change(function (e){
+                    const el_select = e.target;
+                    let perpagevalue = $(el_select).val();
+                    const num_page = $('.page-item.active').attr('data-page');
+                    let pagination = {page: num_page, perpage: perpagevalue}
+                    const filters = getFilters();
+                    queryTable(filters,pagination);
+                    // console.log(perpagevalue)
+                    // console.log(num_page)
+                })
             }
 
 
@@ -104,6 +116,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                     HideLoader();
                     initPagination();
                     console.log('Данные получены');
+                    // console.log(response);
                 });
                 request.fail(function (jqXHR, textStatus) {
                     HideLoader();

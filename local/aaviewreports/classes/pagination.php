@@ -95,7 +95,7 @@ class pagination
             $page2right = "<div class='{$class_item}' data-page=" . ($page + 2) . ">" . ($page + 2) . "</div>";
         }
 
-        $html .= $startpage . $prev . $page2left . $page1left . '<div class="' . $class_item . ' active">' . $page . '</div>' . $page1right . $page2right . $next . $endpage;
+        $html .= $startpage . $prev . $page2left . $page1left . '<div class="' . $class_item . ' active" data-page="'. ($page) . '">' . $page . '</div>' . $page1right . $page2right . $next . $endpage;
 
         $html .= \html_writer::end_tag('div');
 
