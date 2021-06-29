@@ -69,7 +69,7 @@ abstract class provider
         return $html;
     }
 
-    private function reformatData($data)
+    protected function reformatData($data)
     {
         $newdata = array();
         if (is_array($data)) {
@@ -85,13 +85,13 @@ abstract class provider
                         $str_index = '';
                         $str_index .= $str . "[{$k}]";
                         if (is_array($filter)) {
-                            foreach ($filter as $i => $z) {
+                            foreach ($filter as $filter_key => $filter_value) {
                                 $str_filter = '';
                                 $str_filter .= $str_index;
-                                if (is_array($z)) {
-                                    $str_filter .= "[{$i}]=>";
+                                if (is_array($filter_value)) {
+                                    $str_filter .= "[{$filter_key}]=>";
                                     $count = 0;
-                                    foreach ($z as $num) {
+                                    foreach ($filter_value as $num) {
                                         if ($count) {
                                             $str_filter .= "," . $num;
                                         } else {
@@ -103,7 +103,7 @@ abstract class provider
                                     $newdata[] = $str_filter;
 
                                 } else {
-                                    $str_filter .= "[{$i}]=>{$z}";
+                                    $str_filter .= "[{$filter_key}]=>{$filter_value}";
                                     $newdata[] = $str_filter;
                                 }
                             }

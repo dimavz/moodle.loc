@@ -27,9 +27,15 @@ class pagination
     public function showPagination()
     {
         $html = '';
-        $html .= $this->renderTotalRecords();
-        $html .= $this->renderPagination();
-        $html .= $this->renderBoxPerPages();
+        if(!empty($this->totalRecords)){
+            $html .= $this->renderTotalRecords();
+            $html .= $this->renderPagination();
+            $html .= $this->renderBoxPerPages();
+        }
+        else{
+            $html .= get_string('not_records','local_aaviewreports');
+        }
+
         return $html;
     }
 
@@ -51,10 +57,10 @@ class pagination
 
         $page = $this->currentPage;
         $count_pages = $this->totalPages;
-        $prev = null; // ссылка НАЗАД
-        $next = null; // ссылка ВПЕРЕД
-        $startpage = null; // ссылка В НАЧАЛО
-        $endpage = null; // ссылка В КОНЕЦ
+        $prev = null; // link PREV
+        $next = null; // link NEXT
+        $startpage = null; // link  START
+        $endpage = null; // link END
         $page2left = null; // вторая страница слева
         $page1left = null; // первая страница слева
         $page2right = null; // вторая страница справа

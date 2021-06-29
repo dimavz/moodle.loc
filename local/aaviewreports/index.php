@@ -2,6 +2,8 @@
 require_once(__DIR__ . '/../../config.php');
 defined('MOODLE_INTERNAL') || die;
 
+require_login(null, false);
+
 use local_aaviewreports\filters;
 use local_aaviewreports\table;
 
@@ -21,6 +23,7 @@ $urlMainCSS = new \moodle_url('/local/aaviewreports/css/main.css');
 $PAGE->requires->jquery();
 $PAGE->requires->js_call_amd("local_aaviewreports/certificationreport", 'init');
 // Add CSS to page
+$PAGE->requires->css(new moodle_url('https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'));
 $PAGE->requires->css($urlChosenCSS);
 $PAGE->requires->css($urlMainCSS);
 

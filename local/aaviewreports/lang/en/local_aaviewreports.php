@@ -30,3 +30,4 @@ $string['url'] = 'Request URL';
 $string['url_desc'] = 'Enter the URL to request the data';
 $string['token'] = 'Token';
 $string['token_desc'] = 'Enter the token for identification';
+$string['not_records'] = 'No records found';

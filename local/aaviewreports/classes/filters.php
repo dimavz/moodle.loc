@@ -28,7 +28,7 @@ class filters extends provider
                     }
                     ?>
                     <label for="id_label_single<?php echo $count ?>">
-                        <?php echo ucwords($filter->name) . ':' ?>
+                        <?php echo ucwords($filter->name) ?>
                         <select id="<?php echo $filter->name ?>" <?php echo $attrs ?>
                                 id="id_label_single<?php echo $count ?>">
                             <?php foreach ($filter->options as $option): ?>

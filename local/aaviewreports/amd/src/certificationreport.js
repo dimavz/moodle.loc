@@ -1,13 +1,10 @@
 define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
     return {
         init: function () {
+
             loadChosen();
 
-            $('body').on('change', '.filter-multiple,.filter-single', function () {
-                const filters = getFilters();
-                // console.log(filters);
-                queryFilters(filters);
-            });
+            initChangeFilters();
 
             $('#clear-filters').click(function () {
                 clearFilters();
@@ -20,26 +17,37 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 queryTable(filters);
             });
 
+            initLoadTrainee();
+
             initPagination();
 
-            function initPagination(){
+            function initChangeFilters(){
+                $('body').on('change', '.filter-multiple,.filter-single', function () {
+                    const filters = getFilters();
+                    console.log(filters);
+                    queryFilters(filters);
+                });
+            }
+
+
+            function initPagination() {
                 $('.page-item[data-page]').click(function () {
                     const num_page = $(this).attr('data-page');
                     const perpagevalue = getPerPage();
                     let pagination = {page: num_page, perpage: perpagevalue}
                     const filters = getFilters();
-                    queryTable(filters,pagination);
+                    queryTable(filters, pagination);
                     // console.log("Click по странице = ", num_page);
                     // console.log("Записей на странице = ", perpagevalue);
                 });
 
-                $('#menuperpage').change(function (e){
+                $('#menuperpage').change(function (e) {
                     const el_select = e.target;
                     let perpagevalue = $(el_select).val();
                     const num_page = $('.page-item.active').attr('data-page');
                     let pagination = {page: num_page, perpage: perpagevalue}
                     const filters = getFilters();
-                    queryTable(filters,pagination);
+                    queryTable(filters, pagination);
                     // console.log(perpagevalue)
                     // console.log(num_page)
                 })
@@ -127,7 +135,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             function queryFilters(filters) {
                 let data = {
-                    dataset: {
+                    data_filters: {
                         report: 'general',
                         filters: filters,
                     }
@@ -135,12 +143,12 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 sendQuery(data);
             }
 
-            function queryTable(filters,pagination = null) {
+            function queryTable(filters, pagination = null) {
                 let data = {
                     datatable: {
                         report: 'general',
                         filters: filters,
-                        pagination:pagination,
+                        pagination: pagination,
                     }
                 }
                 sendQuery(data, '#table_aaviewreports');
@@ -149,7 +157,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
             function clearFilters() {
 
                 let data = {
-                    clearfilters: 'clearfilters'
+                    clear_filters: 'clearfilters'
                 }
                 sendQuery(data);
             }
@@ -160,6 +168,52 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             function HideLoader() {
                 $('.loader__wrap').css('display', 'none');
+            }
+
+            function initLoadTrainee() {
+                $(document).on('keyup', "#trainee_chosen .chosen-search-input", function () {
+                    var buf = $("#trainee_chosen .chosen-search-input").val();
+                    console.log(buf)
+                    if ($(this).val().length > 2) {
+                        load_trainee(buf);
+                    } else {
+                        $('#trainee').html("<option selected='selected' value=''>All</option>");
+                        $('#trainee').trigger("chosen:updated");
+                    }
+                    $('#trainee_chosen .chosen-search-input').val(buf);
+                });
+            }
+
+            function load_trainee(buf) {
+
+                const URL = configAjax.wwwroot + '/local/aaviewreports/data_request.php';
+                const TYPE = 'POST';
+                const DATATYPE = 'json';
+                let data = {data_trainee: buf}
+
+                var request = $.ajax({
+                    url: URL,
+                    type: TYPE,
+                    dataType: DATATYPE,
+                    data: data,
+                });
+
+                request.done(function (response) {
+                    // console.log('Запрос успешный')
+                    // console.log(response)
+                    $("#trainee").html('');
+                    $("#trainee").append('<option value="">All</option>');
+                    $.each(response.values, function (idx, obj) {
+                        //$.each(data, function (idx, obj) {
+                        $("#trainee").append('<option value="' + obj.id + '">' + obj.value + '</option>');
+                    });
+                    $("#trainee").trigger("chosen:updated");
+                    $('#trainee_chosen .chosen-search-input').val(buf);
+                });
+                request.fail(function (jqXHR, textStatus) {
+                    // console.log('Запрос неудачный')
+                    console.log(jqXHR);
+                });
             }
         }
     }
