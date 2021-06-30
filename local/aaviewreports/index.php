@@ -45,7 +45,10 @@ echo $filters->renderItems();
 ?>
 </div>
 <div class="filters_buttons">
-    <span class="btn-reset" id="clear-filters">Clear all filters</span>
+    <div class="btn-reset" id="clear-filters">
+        <span class="icon-close"></span>
+        <span>Clear all filters</span>
+    </div>
     <button id="apply-filters">Apply filters</button>
 </div>
 <div class="loader__wrap">
