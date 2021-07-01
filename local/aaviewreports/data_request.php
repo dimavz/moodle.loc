@@ -16,9 +16,9 @@ if($_REQUEST['clear_filters'])
     echo $filters->renderItems();
 }
 
-if($_REQUEST['datatable'])
+if($_REQUEST['data_table'])
 {
-    $table = new \local_aaviewreports\table($_REQUEST['datatable']);
+    $table = new \local_aaviewreports\table($_REQUEST['data_table']);
     echo $table->renderItems();
 }
 

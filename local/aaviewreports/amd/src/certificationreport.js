@@ -11,10 +11,11 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
             });
 
 
-            $('#apply-filters').click(function () {
+            $('#apply-filters').click(function (e) {
                 const filters = getFilters();
                 // console.log(filters);
                 queryTable(filters);
+                e.preventDefault();
             });
 
             initLoadTrainee();
@@ -145,7 +146,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             function queryTable(filters, pagination = null) {
                 let data = {
-                    datatable: {
+                    data_table: {
                         report: 'general',
                         filters: filters,
                         pagination: pagination,

@@ -32,30 +32,76 @@ $baseurl = $CFG->wwwroot;
 $filters = new filters();
 $table = new table();
 
+$urlDownload = new \moodle_url('/local/aaviewreports/exel_download.php');
+
 echo $OUTPUT->header();
 ?>
-<script>
-    const configAjax = {
-        wwwroot: '<?php echo $baseurl?>',
-    }
-</script>
-<div id="filters_aaviewreports">
-<?php
-echo $filters->renderItems();
-?>
-</div>
-<div class="filters_buttons">
-    <div class="btn-reset" id="clear-filters">
-        <span class="icon-close"></span>
-        <span>Clear all filters</span>
+    <script>
+        const configAjax = {
+            wwwroot: '<?php echo $baseurl?>',
+        }
+    </script>
+    <form id="form-filters" action="<?php echo $urlDownload ?>" method="post">
+    <div id="filters_aaviewreports">
+
+            <?php
+            echo $filters->renderItems();
+            ?>
     </div>
-    <button id="apply-filters">Apply filters</button>
-</div>
-<div class="loader__wrap">
-    <div id="loader"></div>
-</div>
+    <div class="filters_buttons">
+        <div class="additional-columns">
+            <div class="ac-title">Additional columns<span class="arrow-down"></span></div>
+            <div class="list-columns">
+                <div class="group-line">
+                    <span>Location</span>
+                    <div class="items">
+                        <div class="item-check">
+                            <input id="contry" type="checkbox" name="contry">
+                            <label for="contry">Contry</label>
+                        </div>
+                       <div class="item-check">
+                           <input id="city" type="checkbox" name="city">
+                           <label for="city">City</label>
+                       </div>
+                    </div>
+                </div>
+                <div class="group-line">
+                    <span>Trainee detals</span>
+                    <div class="items">
+                        <div class="item-check">
+                            <input id="job" type="checkbox" name="job">
+                            <label for="contry">Job Title</label>
+                        </div>
+                       <div class="item-check">
+                           <input id="date" type="checkbox" name="date">
+                           <label for="city">Registration Date</label>
+                       </div>
+                        <div class="item-check">
+                           <input id="last-login" type="checkbox" name="last-login">
+                           <label for="city">Last Login</label>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btns-left">
+            <div class="btn-reset" id="clear-filters">
+                <span class="icon-close"></span>
+                <span>Clear all filters</span>
+            </div>
+            <button id="apply-filters" class="btn btn-apply">Apply filters</button>
+        </div>
+    </div>
+    <div class="download_button">
+        <input id="hidden-filters" type="hidden" value="">
+        <button type="submit" id="download-exel" class="btn btn-download">Download</button>
+    </div>
+    </form>
+    <div class="loader__wrap">
+        <div id="loader"></div>
+    </div>
 <?php
-echo \html_writer::start_tag('div',['id'=>'table_aaviewreports']);
+echo \html_writer::start_tag('div', ['id' => 'table_aaviewreports']);
 echo $table->renderItems();
 echo \html_writer::end_tag('div');
 //echo $table->renderRawTable();

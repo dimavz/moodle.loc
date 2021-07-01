@@ -27,13 +27,12 @@ class pagination
     public function showPagination()
     {
         $html = '';
-        if(!empty($this->totalRecords)){
+        if (!empty($this->totalRecords)) {
             $html .= $this->renderTotalRecords();
             $html .= $this->renderPagination();
             $html .= $this->renderBoxPerPages();
-        }
-        else{
-            $html .= get_string('not_records','local_aaviewreports');
+        } else {
+            $html .= get_string('not_records', 'local_aaviewreports');
         }
 
         return $html;
@@ -73,37 +72,38 @@ class pagination
             $attrs_conteiner['id'] = $id;
         }
 
-        $html .= \html_writer::start_tag('div', $attrs_conteiner);
+        if (!empty($this->totalRecords) && ($this->perPage < $this->totalRecords)) {
+            $html .= \html_writer::start_tag('div', $attrs_conteiner);
 
+            if ($page > 1) {
+                $prev = "<div class='{$class_item}' data-page=" . ($page - 1) . ">Prev</div>";
+            }
+            if ($page < $count_pages) {
+                $next = "<div class='{$class_item}' data-page=" . ($page + 1) . ">Next</div>";
+            }
+            if ($page > 3) {
+                $startpage = "<div class='{$class_item}' data-page='1'>Start</div>";
+            }
+            if ($page < ($count_pages - 2)) { // End page
+                $endpage = "<div class='{$class_item}' data-page='{$count_pages}'>$count_pages</div>";
+            }
+            if ($page - 2 > 0) {
+                $page2left = "<div class='{$class_item}' data-page=" . ($page - 2) . ">" . ($page - 2) . "</div>";
+            }
+            if ($page - 1 > 0) {
+                $page1left = "<div class='{$class_item}' data-page=" . ($page - 1) . ">" . ($page - 1) . "</div>";
+            }
+            if ($page + 1 <= $count_pages) {
+                $page1right = "<div class='{$class_item}' data-page=" . ($page + 1) . ">" . ($page + 1) . "</div>";
+            }
+            if ($page + 2 <= $count_pages) {
+                $page2right = "<div class='{$class_item}' data-page=" . ($page + 2) . ">" . ($page + 2) . "</div>";
+            }
 
-        if ($page > 1) {
-            $prev = "<div class='{$class_item}' data-page=" . ($page - 1) . ">Prev</div>";
-        }
-        if ($page < $count_pages) {
-            $next = "<div class='{$class_item}' data-page=" . ($page + 1) . ">Next</div>";
-        }
-        if ($page > 3) {
-            $startpage = "<div class='{$class_item}' data-page='1'>Start</div>";
-        }
-        if ($page < ($count_pages - 2)) { // End page
-            $endpage = "<div class='{$class_item}' data-page='{$count_pages}'>$count_pages</div>";
-        }
-        if ($page - 2 > 0) {
-            $page2left = "<div class='{$class_item}' data-page=" . ($page - 2) . ">" . ($page - 2) . "</div>";
-        }
-        if ($page - 1 > 0) {
-            $page1left = "<div class='{$class_item}' data-page=" . ($page - 1) . ">" . ($page - 1) . "</div>";
-        }
-        if ($page + 1 <= $count_pages) {
-            $page1right = "<div class='{$class_item}' data-page=" . ($page + 1) . ">" . ($page + 1) . "</div>";
-        }
-        if ($page + 2 <= $count_pages) {
-            $page2right = "<div class='{$class_item}' data-page=" . ($page + 2) . ">" . ($page + 2) . "</div>";
-        }
+            $html .= $startpage . $prev . $page2left . $page1left . '<div class="' . $class_item . ' active" data-page="' . ($page) . '">' . $page . '</div>' . $page1right . $page2right . $next . $endpage;
 
-        $html .= $startpage . $prev . $page2left . $page1left . '<div class="' . $class_item . ' active" data-page="'. ($page) . '">' . $page . '</div>' . $page1right . $page2right . $next . $endpage;
-
-        $html .= \html_writer::end_tag('div');
+            $html .= \html_writer::end_tag('div');
+        }
 
         return $html;
     }
@@ -116,20 +116,22 @@ class pagination
             $attrs_container['id'] = $id;
         }
         $attrs_container['class'] = $class;
-        $html .= \html_writer::start_tag('div', $attrs_container);
+        if (!empty($this->totalRecords) && ($this->perPage < $this->totalRecords)) {
+            $html .= \html_writer::start_tag('div', $attrs_container);
 
-        foreach ([25, 50, 100] as $perpagevalue) {
+            foreach ([25, 50, 100] as $perpagevalue) {
 
-            if ($this->perPage == $perpagevalue) {
-                $selected = $perpagevalue;
+                if ($this->perPage == $perpagevalue) {
+                    $selected = $perpagevalue;
+                }
+                $options[$perpagevalue] = $perpagevalue;
             }
-            $options[$perpagevalue] = $perpagevalue;
+
+            $html .= \html_writer::label('Show', null);
+            $html .= \html_writer::select($options, 'perpage', $selected, false, ['class' => 'chosen-select']);
+
+            $html .= \html_writer::end_tag('div');
         }
-
-        $html .= \html_writer::label('Show', null);
-        $html .= \html_writer::select($options, 'perpage', $selected, false, ['class' => 'chosen-select']);
-
-        $html .= \html_writer::end_tag('div');
         return $html;
     }
 }
