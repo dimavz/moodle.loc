@@ -64,7 +64,6 @@ echo $OUTPUT->header();
                 <button id="apply-filters" class="btn btn-apply">Apply filters</button>
             </div>
             <div class="download_button">
-                <input id="hidden-filters" type="hidden" value="">
                 <button type="submit" id="download-exel" class="btn btn-download">Download</button>
             </div>
         </div>

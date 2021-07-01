@@ -7,19 +7,19 @@ require_once(__DIR__ . '/../../config.php');
 if($_REQUEST['data_filters'])
 {
     $filters = new \local_aaviewreports\filters($_REQUEST['data_filters']);
-    echo $filters->renderItems();
+    echo json_encode(['filters'=>$filters->renderItems(),'checkboxes' =>$filters->renderAdditionalColumns()]);
 }
 
 if($_REQUEST['clear_filters'])
 {
     $filters = new \local_aaviewreports\filters();
-    echo $filters->renderItems();
+    echo json_encode(['filters'=>$filters->renderItems()]);
 }
 
 if($_REQUEST['data_table'])
 {
     $table = new \local_aaviewreports\table($_REQUEST['data_table']);
-    echo $table->renderItems();
+    echo json_encode(['table'=>$table->renderItems()]);
 }
 
 if($_REQUEST['data_trainee'])

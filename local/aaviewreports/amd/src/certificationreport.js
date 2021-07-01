@@ -13,25 +13,27 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             $('#apply-filters').click(function (e) {
                 const filters = getFilters();
-                // console.log(filters);
+                console.log(filters);
                 queryTable(filters);
                 e.preventDefault();
             });
 
-            $('.ac-title').click(function (){
+            $('.ac-title').click(function () {
                 $('.list-columns').toggleClass('show');
-               $('.arrow-down').toggleClass('arrow-up');
+                $('.arrow-down').toggleClass('arrow-up');
             });
 
             initLoadTrainee();
 
             initPagination();
 
-            function initChangeFilters(){
+            function initChangeFilters() {
                 $('body').on('change', '.filter-multiple,.filter-single', function () {
                     const filters = getFilters();
-                    console.log(filters);
-                    queryFilters(filters);
+                    const checkboxes = getAdditionalColumns();
+                    console.log('filters', filters);
+                    console.log('checkboxes', checkboxes);
+                    queryFilters(filters,checkboxes);
                 });
             }
 
@@ -77,6 +79,24 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 return filters;
             }
 
+            function getAdditionalColumns() {
+                let checkboxes = [];
+                let checkbox;
+                const listCheckboxes = $('.list-columns input[type="checkbox"]');
+                console.log('listCheckboxes', listCheckboxes)
+                let count = 0;
+                $.each(listCheckboxes, function (index, elem) {
+                    const name = elem.getAttribute('name');
+                    const checked = $(elem).is(':checked');
+                    if (checked) {
+                        checkbox = {name: name, selected: checked};
+                        checkboxes[count] = checkbox;
+                        count++;
+                    }
+                });
+                return checkboxes;
+            }
+
             function getPerPage() {
                 let perpagevalue;
                 const select = $('#menuperpage');
@@ -114,7 +134,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 console.log('getDataFromServer');
                 const URL = configAjax.wwwroot + '/local/aaviewreports/data_request.php';
                 const TYPE = 'POST';
-                const DATATYPE = 'html';
+                const DATATYPE = 'json';
 
                 var request = $.ajax({
                     url: URL,
@@ -124,8 +144,15 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 });
 
                 request.done(function (response) {
-                    $(selector).html();
-                    $(selector).html(response);
+                    // console.log(JSON.stringify(response.filters))
+                    if(response.filters){
+                        $('#filters_aaviewreports').html(response.filters);
+                    }
+                    if(response.table){
+                        $('#table_aaviewreports').html(response.table);
+                    }
+                    // $(selector).html();
+                    // $(selector).html(response.filters);
                     loadChosen();
                     HideLoader();
                     initPagination();
@@ -139,11 +166,12 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 });
             }
 
-            function queryFilters(filters) {
+            function queryFilters(filters,checkboxes) {
                 let data = {
                     data_filters: {
                         report: 'general',
                         filters: filters,
+                        checkboxes:checkboxes,
                     }
                 }
                 sendQuery(data);
