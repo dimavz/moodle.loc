@@ -75,7 +75,7 @@ class filters extends provider
                     foreach ($columns as $column) {
                         $checked = !empty($column->selected) ? true : false;
                         $html .= \html_writer::start_div('item-check');
-                        $html .= \html_writer::checkbox($column->name, '', $checked,$column->title,['id' => 'checkbox_'.$column->name]);
+                        $html .= \html_writer::checkbox($column->name, 1, $checked,$column->title,['id' => 'checkbox_'.$column->name]);
                         $html .= \html_writer::end_div();
                     }
                     $html .= \html_writer::end_div();
