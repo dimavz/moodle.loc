@@ -179,6 +179,7 @@
     align-items: center;
     margin-bottom: 20px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .arrow-down {
@@ -198,9 +199,24 @@
     margin-bottom: 0px;
     width: 0;
     height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 7px solid #fc4710;
+    border-left: 5px solid transparent !important;
+    border-right: 5px solid transparent !important;
+    border-bottom: 7px solid #fc4710 !important;
+    border-top:none!important;
+}
+
+.list-columns {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 1s ease 0s;
+}
+
+.list-columns.show {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transition: all 1s ease 0s;
 }
 
 .group-line{

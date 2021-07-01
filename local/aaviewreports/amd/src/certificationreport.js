@@ -18,6 +18,11 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 e.preventDefault();
             });
 
+            $('.ac-title').click(function (){
+                $('.list-columns').toggleClass('show');
+               $('.arrow-down').toggleClass('arrow-up');
+            });
+
             initLoadTrainee();
 
             initPagination();

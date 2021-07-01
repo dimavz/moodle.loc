@@ -59,6 +59,7 @@ abstract class provider
             curl_close($curl);
 
             $items = json_decode($items);
+
         }
         return $items;
     }

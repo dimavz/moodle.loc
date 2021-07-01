@@ -50,38 +50,39 @@ echo $OUTPUT->header();
     </div>
     <div class="filters_buttons">
         <div class="additional-columns">
-            <div class="ac-title">Additional columns<span class="arrow-down"></span></div>
+            <div id="ac-title" class="ac-title">Additional columns<span class="arrow-down"></span></div>
             <div class="list-columns">
-                <div class="group-line">
-                    <span>Location</span>
-                    <div class="items">
-                        <div class="item-check">
-                            <input id="contry" type="checkbox" name="contry">
-                            <label for="contry">Contry</label>
-                        </div>
-                       <div class="item-check">
-                           <input id="city" type="checkbox" name="city">
-                           <label for="city">City</label>
-                       </div>
-                    </div>
-                </div>
-                <div class="group-line">
-                    <span>Trainee detals</span>
-                    <div class="items">
-                        <div class="item-check">
-                            <input id="job" type="checkbox" name="job">
-                            <label for="contry">Job Title</label>
-                        </div>
-                       <div class="item-check">
-                           <input id="date" type="checkbox" name="date">
-                           <label for="city">Registration Date</label>
-                       </div>
-                        <div class="item-check">
-                           <input id="last-login" type="checkbox" name="last-login">
-                           <label for="city">Last Login</label>
-                       </div>
-                    </div>
-                </div>
+                <?php echo $filters->renderAdditionalColumns(); ?>
+<!--                <div class="group-line">-->
+<!--                    <span>Location</span>-->
+<!--                    <div class="items">-->
+<!--                        <div class="item-check">-->
+<!--                            <input id="contry" type="checkbox" name="contry">-->
+<!--                            <label for="contry">Contry</label>-->
+<!--                        </div>-->
+<!--                       <div class="item-check">-->
+<!--                           <input id="city" type="checkbox" name="city">-->
+<!--                           <label for="city">City</label>-->
+<!--                       </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="group-line">-->
+<!--                    <span>Trainee detals</span>-->
+<!--                    <div class="items">-->
+<!--                        <div class="item-check">-->
+<!--                            <input id="job" type="checkbox" name="job">-->
+<!--                            <label for="contry">Job Title</label>-->
+<!--                        </div>-->
+<!--                       <div class="item-check">-->
+<!--                           <input id="date" type="checkbox" name="date">-->
+<!--                           <label for="city">Registration Date</label>-->
+<!--                       </div>-->
+<!--                        <div class="item-check">-->
+<!--                           <input id="last-login" type="checkbox" name="last-login">-->
+<!--                           <label for="city">Last Login</label>-->
+<!--                       </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
         <div class="btns-left">

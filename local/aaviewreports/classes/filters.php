@@ -2,11 +2,20 @@
 
 
 namespace local_aaviewreports;
+
 use local_aaviewreports\provider;
 
 
 class filters extends provider
 {
+    protected $additionalColumns;
+
+    public function __construct($data = array())
+    {
+        parent::__construct($data);
+        $this->additionalColumns = $this->items->additionalcolumns;
+    }
+
     public function renderItems()
     {
         $html = '';
@@ -47,6 +56,36 @@ class filters extends provider
             <?php
             $html = ob_get_contents();
             ob_end_clean();
+        }
+        return $html;
+    }
+
+    public function renderAdditionalColumns($class_group = 'group-line')
+    {
+
+        $html = '';
+        if (!empty($this->additionalColumns)) {
+            $rows = $this->additionalColumns;
+            foreach ($rows as $row) {
+                $html .= \html_writer::start_tag('div', ['class' => $class_group]);
+                $html .= \html_writer::tag('span', $row->title);
+                if (!empty($row->columns)) {
+                    $columns = $row->columns;
+                    $html .= \html_writer::start_div('items');
+                    foreach ($columns as $column) {
+                        $checked = !empty($column->selected) ? true : false;
+                        $html .= \html_writer::start_div('item-check');
+                        $html .= \html_writer::checkbox($column->name, '', $checked,$column->title,['id' => 'checkbox_'.$column->name]);
+                        $html .= \html_writer::end_div();
+                    }
+                    $html .= \html_writer::end_div();
+                }
+                $html .= \html_writer::end_tag('div');
+            }
+//            echo '<pre>';
+//            print_r($this->additionalColumns);
+//            echo '</pre>';
+//            exit();
         }
         return $html;
     }
