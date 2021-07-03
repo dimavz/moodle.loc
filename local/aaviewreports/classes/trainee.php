@@ -7,7 +7,7 @@ use local_aaviewreports\provider;
 
 class trainee extends provider
 {
-    protected $request_url = '/aareport/webservice/restful/server.php/local_aareports_search_users';
+    protected $request_url = '/local_aareports_search_users';
 
     protected function reformatData($data){
         return array('report' => 'general','search'=>$data);

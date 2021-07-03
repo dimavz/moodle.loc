@@ -12,14 +12,16 @@ if($_REQUEST['data_filters'])
 
 if($_REQUEST['clear_filters'])
 {
+    $table = new \local_aaviewreports\table();
     $filters = new \local_aaviewreports\filters();
-    echo json_encode(['filters'=>$filters->renderItems()]);
+    echo json_encode(['table'=>$table->renderItems(),'filters'=>$filters->renderItems(),'checkboxes' =>$filters->renderAdditionalColumns()]);
 }
 
 if($_REQUEST['data_table'])
 {
     $table = new \local_aaviewreports\table($_REQUEST['data_table']);
-    echo json_encode(['table'=>$table->renderItems()]);
+    $filters = new \local_aaviewreports\filters($_REQUEST['data_table']);
+    echo json_encode(['table'=>$table->renderItems(),'checkboxes' =>$filters->renderAdditionalColumns()]);
 }
 
 if($_REQUEST['data_trainee'])

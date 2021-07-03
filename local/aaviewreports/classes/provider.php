@@ -7,7 +7,7 @@ namespace local_aaviewreports;
 abstract class provider
 {
     protected $service_url;
-    protected $rest_url ='/aareport/webservice/restful/server.php/';
+    protected $rest_url = '/webservice/restful/server.php/';
     protected $request_url = 'local_aareports_get_report_filter';
     protected $url;
     protected $token;
@@ -17,8 +17,8 @@ abstract class provider
     public function __construct($data = array())
     {
         $this->service_url = get_config('local_aaviewreports', 'url');
-        if (!empty($this->service_url)) {
-            $this->url = $this->service_url .$this->rest_url. $this->request_url;
+        if (!empty($this->service_url) && !empty($this->rest_url)) {
+            $this->url = $this->service_url . $this->rest_url . $this->request_url;
         }
         $this->token = get_config('local_aaviewreports', 'token');
         $this->items = $this->getItems($data);
@@ -74,6 +74,7 @@ abstract class provider
     protected function reformatData($data)
     {
         $newdata = array();
+        $data = (array) $data;
         if (is_array($data)) {
             foreach ($data as $key => $item) {
                 if ($key == 'report') {
@@ -110,6 +111,22 @@ abstract class provider
                                 }
                             }
                         }
+                    }
+                }
+                if(is_array($item)&& $key =='checkboxes' ){
+                    $count_checboxes = 0;
+                    foreach ($item as $cb_key => $checkbox) {
+                        if(is_array($checkbox)){
+                            foreach($checkbox as $cb_k=>$cb_val){
+                                if ($cb_k == 'name') {
+                                    $newdata[] = "additionalcolumns[{$count_checboxes}][name] =>{$cb_val}";
+                                }
+                                if ($cb_k == 'selected') {
+                                    $newdata[] = "additionalcolumns[{$count_checboxes}][selected] =>1";
+                                }
+                            }
+                        }
+                        $count_checboxes++;
                     }
                 }
                 if (is_array($item) && $key == 'pagination') {

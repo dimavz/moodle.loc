@@ -13,10 +13,18 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             $('#apply-filters').click(function (e) {
                 const filters = getFilters();
-                console.log(filters);
-                queryTable(filters);
+                const checkboxes = getAdditionalColumns();
+                // console.log(filters);
+                queryTable(filters,null,checkboxes);
                 e.preventDefault();
             });
+
+            $('#download-exel').click(function (e){
+                const filters = getFilters();
+                const checkboxes = getAdditionalColumns();
+                let data = { report: 'general',filters: filters,checkboxes:checkboxes}
+                $('input[name="data-exel"]').attr('value',JSON.stringify(data))
+            })
 
             $('.ac-title').click(function () {
                 $('.list-columns').toggleClass('show');
@@ -44,7 +52,8 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                     const perpagevalue = getPerPage();
                     let pagination = {page: num_page, perpage: perpagevalue}
                     const filters = getFilters();
-                    queryTable(filters, pagination);
+                    const checkboxes = getAdditionalColumns();
+                    queryTable(filters, pagination,checkboxes);
                     // console.log("Click по странице = ", num_page);
                     // console.log("Записей на странице = ", perpagevalue);
                 });
@@ -55,7 +64,8 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                     const num_page = $('.page-item.active').attr('data-page');
                     let pagination = {page: num_page, perpage: perpagevalue}
                     const filters = getFilters();
-                    queryTable(filters, pagination);
+                    const checkboxes = getAdditionalColumns();
+                    queryTable(filters, pagination,checkboxes);
                     // console.log(perpagevalue)
                     // console.log(num_page)
                 })
@@ -129,7 +139,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 return false;
             }
 
-            function sendQuery(data, selector = '#filters_aaviewreports') {
+            function sendQuery(data) {
                 ShowLoader();
                 console.log('getDataFromServer');
                 const URL = configAjax.wwwroot + '/local/aaviewreports/data_request.php';
@@ -144,24 +154,25 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 });
 
                 request.done(function (response) {
-                    // console.log(JSON.stringify(response.filters))
+
                     if(response.filters){
                         $('#filters_aaviewreports').html(response.filters);
                     }
                     if(response.table){
                         $('#table_aaviewreports').html(response.table);
                     }
-                    // $(selector).html();
-                    // $(selector).html(response.filters);
+                    if(response.checkboxes){
+                        $('.list-columns').html(response.checkboxes);
+                    }
                     loadChosen();
                     HideLoader();
                     initPagination();
                     console.log('Данные получены');
-                    // console.log(response);
                 });
                 request.fail(function (jqXHR, textStatus) {
                     HideLoader();
                     initPagination();
+                    console.log('Ошибка запроса AJAX');
                     console.log(jqXHR);
                 });
             }
@@ -177,15 +188,16 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 sendQuery(data);
             }
 
-            function queryTable(filters, pagination = null) {
+            function queryTable(filters, pagination = null,checkboxes) {
                 let data = {
                     data_table: {
                         report: 'general',
                         filters: filters,
                         pagination: pagination,
+                        checkboxes:checkboxes,
                     }
                 }
-                sendQuery(data, '#table_aaviewreports');
+                sendQuery(data);
             }
 
             function clearFilters() {

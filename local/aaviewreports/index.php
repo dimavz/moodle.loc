@@ -68,7 +68,7 @@ echo $OUTPUT->header();
             </div>
         </div>
     </div>
-
+        <input type="hidden" name='data-exel' value="">
     </form>
     <div class="loader__wrap">
         <div id="loader"></div>
