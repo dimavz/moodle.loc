@@ -7,7 +7,8 @@ namespace local_aaviewreports;
 abstract class provider
 {
     protected $service_url;
-    protected $request_url = '/aareport/webservice/restful/server.php/local_aareports_get_report_filter';
+    protected $rest_url ='/aareport/webservice/restful/server.php/';
+    protected $request_url = 'local_aareports_get_report_filter';
     protected $url;
     protected $token;
     protected $data;
@@ -17,7 +18,7 @@ abstract class provider
     {
         $this->service_url = get_config('local_aaviewreports', 'url');
         if (!empty($this->service_url)) {
-            $this->url = $this->service_url . $this->request_url;
+            $this->url = $this->service_url .$this->rest_url. $this->request_url;
         }
         $this->token = get_config('local_aaviewreports', 'token');
         $this->items = $this->getItems($data);

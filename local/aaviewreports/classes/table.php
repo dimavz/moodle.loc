@@ -8,7 +8,7 @@ use local_aaviewreports\pagination;
 
 class table extends provider
 {
-    protected $request_url = '/aareport/webservice/restful/server.php/local_aareports_get_report_data';
+    protected $request_url = 'local_aareports_get_report_data';
     protected $response;
     protected $paginationParams;
     public $pagination;
