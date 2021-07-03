@@ -93,7 +93,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 let checkboxes = [];
                 let checkbox;
                 const listCheckboxes = $('.list-columns input[type="checkbox"]');
-                console.log('listCheckboxes', listCheckboxes)
+                // console.log('listCheckboxes', listCheckboxes)
                 let count = 0;
                 $.each(listCheckboxes, function (index, elem) {
                     const name = elem.getAttribute('name');
@@ -141,7 +141,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
 
             function sendQuery(data) {
                 ShowLoader();
-                console.log('getDataFromServer');
+                console.log('Отправляем запрос на сервер');
                 const URL = configAjax.wwwroot + '/local/aaviewreports/data_request.php';
                 const TYPE = 'POST';
                 const DATATYPE = 'json';
@@ -154,6 +154,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                 });
 
                 request.done(function (response) {
+                    console.log('Запрос отработал успешно');
 
                     if(response.filters){
                         $('#filters_aaviewreports').html(response.filters);
@@ -167,12 +168,12 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                     loadChosen();
                     HideLoader();
                     initPagination();
-                    console.log('Данные получены');
                 });
                 request.fail(function (jqXHR, textStatus) {
                     HideLoader();
                     initPagination();
                     console.log('Ошибка запроса AJAX');
+                    console.log('textStatus',textStatus);
                     console.log(jqXHR);
                 });
             }
@@ -203,7 +204,7 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
             function clearFilters() {
 
                 let data = {
-                    clear_filters: 'clearfilters'
+                    clear_filters: 1
                 }
                 sendQuery(data);
             }

@@ -1,32 +1,34 @@
 <?php
 require_once(__DIR__ . '/../../config.php');
-//defined('MOODLE_INTERNAL') || die;
 
-//$dataset = optional_param('dataset', '', PARAM_RAW);
-
-if($_REQUEST['data_filters'])
-{
+if (isset($_REQUEST['data_filters'])) {
     $filters = new \local_aaviewreports\filters($_REQUEST['data_filters']);
-    echo json_encode(['filters'=>$filters->renderItems(),'checkboxes' =>$filters->renderAdditionalColumns()]);
+    $filtersHtml = $filters->renderItems();
+    $checkboxesHtml = $filters->renderAdditionalColumns();
+    echo json_encode(['filters' => $filtersHtml, 'checkboxes' =>$checkboxesHtml]);
+    exit;
 }
 
-if($_REQUEST['clear_filters'])
-{
+if (isset($_REQUEST['clear_filters'])) {
     $table = new \local_aaviewreports\table();
     $filters = new \local_aaviewreports\filters();
-    echo json_encode(['table'=>$table->renderItems(),'filters'=>$filters->renderItems(),'checkboxes' =>$filters->renderAdditionalColumns()]);
+    $tableHtml = $table->renderItems();
+    $filtersHtml = $filters->renderItems();
+    $checkboxesHtml = $filters->renderAdditionalColumns();
+    echo json_encode(['table' => $tableHtml, 'filters' => $filtersHtml, 'checkboxes' => $checkboxesHtml]);
+    exit;
 }
 
-if($_REQUEST['data_table'])
-{
+if (isset($_REQUEST['data_table'])) {
     $table = new \local_aaviewreports\table($_REQUEST['data_table']);
-    $filters = new \local_aaviewreports\filters($_REQUEST['data_table']);
-    echo json_encode(['table'=>$table->renderItems(),'checkboxes' =>$filters->renderAdditionalColumns()]);
+    $tableHtml = $table->renderItems();
+    echo json_encode(['table' => $tableHtml]);
+//    exit;
 }
 
-if($_REQUEST['data_trainee'])
-{
+if (isset($_REQUEST['data_trainee'])) {
     $trainee = new \local_aaviewreports\trainee($_REQUEST['data_trainee']);
     echo $trainee->getTrainee();
+//    exit;
 }
 exit;

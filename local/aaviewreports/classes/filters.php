@@ -36,7 +36,7 @@ class filters extends provider
                         $selected_options = explode(',', $filter->selected);
                     }
                     ?>
-                    <label for="id_label_single<?php echo $count ?>">
+                    <label for="<?php echo $filter->name ?>">
                         <?php echo ucwords($filter->name) ?>
                         <select id="<?php echo $filter->name ?>" <?php echo $attrs ?>
                                 id="id_label_single<?php echo $count ?>">
