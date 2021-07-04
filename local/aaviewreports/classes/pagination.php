@@ -11,6 +11,7 @@ class pagination
     protected $currentPage; // Текущая страница
     protected $perPage; // Записей на странице
     protected $maxPerPage; // Максимальное колич запией на странице
+    protected $message;
 
     public function __construct($params)
     {
@@ -24,15 +25,22 @@ class pagination
 
     }
 
-    public function showPagination()
+    public function getMessage(){
+        if(!empty($this->message)){
+            return $this->message;
+        }
+        return null;
+    }
+
+    public function showPagination($select_id ='perpage')
     {
         $html = '';
         if (!empty($this->totalRecords)) {
             $html .= $this->renderTotalRecords();
             $html .= $this->renderPagination();
-            $html .= $this->renderBoxPerPages();
+            $html .= $this->renderBoxPerPages($select_id);
         } else {
-            $html .= get_string('not_records', 'local_aaviewreports');
+            $this->message = get_string('not_records', 'local_aaviewreports');
         }
 
         return $html;
@@ -108,7 +116,7 @@ class pagination
         return $html;
     }
 
-    protected function renderBoxPerPages($id = '', $class = 'pagination__boxperpage', $selected = null)
+    protected function renderBoxPerPages($select_id ='perpage',$id = '', $class = 'pagination__boxperpage', $selected = null)
     {
         $html = '';
         $attrs_container = array();
@@ -128,7 +136,7 @@ class pagination
             }
 
             $html .= \html_writer::label('Show', null);
-            $html .= \html_writer::select($options, 'perpage', $selected, false, ['class' => 'chosen-select']);
+            $html .= \html_writer::select($options, $select_id, $selected, false, ['class' => 'chosen-select']);
 
             $html .= \html_writer::end_tag('div');
         }

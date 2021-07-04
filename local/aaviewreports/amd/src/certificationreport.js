@@ -69,6 +69,15 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                     // console.log(perpagevalue)
                     // console.log(num_page)
                 })
+                $('#menuperpage2').change(function (e) {
+                    const el_select = e.target;
+                    let perpagevalue = $(el_select).val();
+                    const num_page = $('.page-item.active').attr('data-page');
+                    let pagination = {page: num_page, perpage: perpagevalue}
+                    const filters = getFilters();
+                    const checkboxes = getAdditionalColumns();
+                    queryTable(filters, pagination,checkboxes);
+                })
             }
 
 
@@ -115,6 +124,14 @@ define(['jquery', 'jqueryui', 'local_aaviewreports/chosen'], function ($) {
                         return perpagevalue = $(elem).val();
                     }
                     perpagevalue = $(elem).val();
+                })
+
+                const select2 = $('#menuperpage2');
+                $.each(select2, function (ind, el) {
+                    if ($(el).attr('selected')) {
+                        return perpagevalue = $(el).val();
+                    }
+                    perpagevalue = $(el).val();
                 })
                 return perpagevalue;
             }

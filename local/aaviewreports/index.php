@@ -22,6 +22,7 @@ $urlMainCSS = new \moodle_url('/local/aaviewreports/css/main.css');
 // Add Script to page
 $PAGE->requires->jquery();
 $PAGE->requires->js_call_amd("local_aaviewreports/certificationreport", 'init');
+$PAGE->requires->js_call_amd("local_aaviewreports/chosen");
 // Add CSS to page
 $PAGE->requires->css(new moodle_url('https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'));
 $PAGE->requires->css($urlChosenCSS);
@@ -41,14 +42,15 @@ echo $OUTPUT->header();
             wwwroot: '<?php echo $baseurl?>',
         }
     </script>
+    <div class="aaviewreports_wrap">
     <form id="form-filters" action="<?php echo $urlDownload ?>" method="post">
-    <div id="filters_aaviewreports">
+        <div id="filters_aaviewreports">
 
             <?php
             echo $filters->renderItems();
             ?>
     </div>
-    <div class="filters_buttons">
+        <div class="filters_buttons">
         <div class="additional-columns">
             <div id="ac-title" class="ac-title">Additional columns<span class="arrow-down"></span></div>
             <div class="list-columns">
@@ -77,5 +79,8 @@ echo $OUTPUT->header();
 echo \html_writer::start_tag('div', ['id' => 'table_aaviewreports']);
 echo $table->renderItems();
 echo \html_writer::end_tag('div');
+?>
+    </div>
+<?php
 //echo $table->renderRawTable();
 echo $OUTPUT->footer();

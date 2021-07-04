@@ -38,6 +38,12 @@ class table extends provider
         $html .= parent::renderItems();
 
         $html .= $this->renderTable();
+        if (!empty($this->pagination)) {
+            $html .= $this->pagination->showPagination('perpage2');
+            if(!empty($this->pagination->getMessage())){
+//                $html .=$this->pagination->getMessage();
+            }
+        }
         return $html;
     }
 
