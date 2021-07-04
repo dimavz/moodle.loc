@@ -19,10 +19,11 @@ class table extends provider
         $response = parent::getItems($data);
         if (!empty($response)) {
             $this->response = $response;
-            $this->paginationParams = $response->pagination;
-            $pagination = new pagination($this->paginationParams);
-            $this->pagination = $pagination;
-
+            if(!empty($this->response->pagination)){
+                $this->paginationParams = $this->response->pagination;
+                $pagination = new pagination($this->paginationParams);
+                $this->pagination = $pagination;
+            }
             return $response->table;
         }
         return $response;

@@ -106,11 +106,11 @@ abstract class provider
                     foreach ($item as $k => $filter) {
                         $str_index = '';
                         $str_index .= $str . "[{$k}]";
-                        if (is_array($filter)) {
+                        if (is_array($filter) || is_object($filter)) {
                             foreach ($filter as $filter_key => $filter_value) {
                                 $str_filter = '';
                                 $str_filter .= $str_index;
-                                if (is_array($filter_value)) {
+                                if (is_array($filter_value) || is_object($filter_value)) {
                                     $str_filter .= "[{$filter_key}]=>";
                                     $count = 0;
                                     foreach ($filter_value as $num) {
